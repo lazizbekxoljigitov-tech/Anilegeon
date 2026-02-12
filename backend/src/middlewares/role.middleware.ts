@@ -1,0 +1,19 @@
+import { Request, Response, NextFunction } from 'express';
+
+export function roleMiddleware(...roles: string[]) {
+  return (req: Request, res: Response, next: NextFunction): void => {
+    if (!req.user) {
+      res.status(401).json({ success: false, error: 'Authentication required.' });
+      return;
+    }
+
+    if (!roles.includes(req.user.role)) {
+      res.status(403).json({ success: false, error: 'Access denied. Insufficient permissions.' });
+      return;
+    }
+
+    next();
+  };
+}
+
+export const adminOnly = roleMiddleware('admin');

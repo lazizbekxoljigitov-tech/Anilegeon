@@ -1,0 +1,20 @@
+{
+  "name": "anilegeon",
+  "version": "1.0.0",
+  "description": "Anilegeon - Premium Anime Streaming Platform",
+  "scripts": {
+    "start": "npm run backend",
+    "backend": "cd backend && npm start",
+    "frontend:dev": "cd frontend && npm run dev",
+    "frontend:build": "cd frontend && npm run build",
+    "build": "npm run frontend:build && npm run copy-build",
+    "copy-build": "node build-script.js",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend:dev\""
+  },
+  "keywords": ["anime", "streaming", "entertainment"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
