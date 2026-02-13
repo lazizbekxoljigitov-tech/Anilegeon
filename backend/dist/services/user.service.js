@@ -108,6 +108,16 @@ class UserService {
             totalEpisodes: totalEpisodes || 0,
         };
     }
+    static async searchById(id) {
+        const { data, error } = await supabase_1.supabase
+            .from('users')
+            .select('id, name, avatar_url')
+            .eq('id', id)
+            .single();
+        if (error || !data)
+            throw new helpers_1.AppError('User not found', 404);
+        return data;
+    }
 }
 exports.UserService = UserService;
 //# sourceMappingURL=user.service.js.map

@@ -14,6 +14,7 @@ const startServer = async () => {
         app_1.default.listen(PORT, () => {
             logger_1.logger.success(`🚀 ANILEGEON Backend running at http://localhost:${PORT}`);
             logger_1.logger.info(`Environment: ${env_1.env.NODE_ENV}`);
+            logger_1.logger.info(`Email User: ${env_1.env.EMAIL_USER}`);
         });
     }
     catch (error) {

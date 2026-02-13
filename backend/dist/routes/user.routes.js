@@ -10,5 +10,6 @@ router.post('/history', user_controller_1.UserController.updateWatchHistory);
 router.get('/saved', user_controller_1.UserController.getSavedAnime);
 router.post('/saved/toggle', user_controller_1.UserController.toggleSaveAnime);
 router.get('/saved/check/:animeId', user_controller_1.UserController.checkSaved);
+router.get('/search-id/:id', user_controller_1.UserController.searchUserById);
 exports.default = router;
 //# sourceMappingURL=user.routes.js.map

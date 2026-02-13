@@ -17,7 +17,7 @@ export const Navbar = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setIsScrolled(window.scrollY > 0);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -47,8 +47,10 @@ export const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-        isScrolled || isMobileMenuOpen ? 'bg-dark-bg/80 backdrop-blur-xl border-b border-white/[0.08] py-3' : 'bg-transparent py-5'
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out ${
+        isScrolled || isMobileMenuOpen 
+          ? 'bg-[#0a0a0b]/80 backdrop-blur-xl border-b border-white/[0.08] py-3 shadow-2xl shadow-black/40' 
+          : 'bg-[#0a0a0b]/50 backdrop-blur-md border-b border-white/[0.05] py-5'
       }`}
     >
       <div className="container mx-auto px-6 flex items-center justify-between">
@@ -134,6 +136,7 @@ export const Navbar = () => {
                         logout();
                         setIsProfileOpen(false);
                       }}
+                      aria-label="Logout"
                       className="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-all"
                     >
                       <LogOut size={18} />
@@ -216,7 +219,9 @@ export const Navbar = () => {
                         <LayoutDashboard className="text-primary" /> Admin Panel
                       </Link>
                     )}
-                    <button onClick={() => { logout(); toggleMobileMenu(); }} className="flex items-center gap-4 text-xl font-bold text-red-500">
+                    <button onClick={() => { logout(); toggleMobileMenu(); }} 
+                      aria-label="Logout from account"
+                      className="flex items-center gap-4 text-xl font-bold text-red-500">
                       <LogOut /> Logout Account
                     </button>
                   </div>

@@ -50,6 +50,15 @@ class UserController {
             next(error);
         }
     }
+    static async searchUserById(req, res, next) {
+        try {
+            const data = await user_service_1.UserService.searchById(req.params.id);
+            res.json({ success: true, data });
+        }
+        catch (error) {
+            next(error);
+        }
+    }
 }
 exports.UserController = UserController;
 //# sourceMappingURL=user.controller.js.map

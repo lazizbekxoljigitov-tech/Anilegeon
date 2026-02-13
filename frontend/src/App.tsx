@@ -12,12 +12,7 @@ function App() {
 
   useEffect(() => {
     checkAuth();
-    // Show splash screen for 3 seconds
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
-
-    return () => clearTimeout(timer);
+    setIsLoading(false);
   }, []);
 
   return (

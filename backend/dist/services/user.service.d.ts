@@ -35,5 +35,10 @@ export declare class UserService {
         totalViews: number;
         totalEpisodes: number;
     }>;
+    static searchById(id: string): Promise<{
+        id: any;
+        name: any;
+        avatar_url: any;
+    }>;
 }
 //# sourceMappingURL=user.service.d.ts.map

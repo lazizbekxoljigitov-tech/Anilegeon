@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EpisodeController = void 0;
 const episode_service_1 = require("../services/episode.service");
-const upload_service_1 = require("../services/upload.service");
 class EpisodeController {
     static async getByAnimeId(req, res, next) {
         try {
@@ -25,10 +24,11 @@ class EpisodeController {
     static async create(req, res, next) {
         try {
             const episodeData = { ...req.body };
-            episodeData.episode_number = parseInt(episodeData.episode_number);
-            if (req.file) {
-                episodeData.video_url = await upload_service_1.UploadService.uploadFile('videos', req.file, episodeData.anime_id);
-            }
+            // Strict type safety for numeric fields
+            if (episodeData.episode_number)
+                episodeData.episode_number = Number(episodeData.episode_number);
+            if (episodeData.duration)
+                episodeData.duration = Number(episodeData.duration);
             const episode = await episode_service_1.EpisodeService.create(episodeData);
             res.status(201).json({ success: true, data: episode });
         }
@@ -40,10 +40,9 @@ class EpisodeController {
         try {
             const updates = { ...req.body };
             if (updates.episode_number)
-                updates.episode_number = parseInt(updates.episode_number);
-            if (req.file) {
-                updates.video_url = await upload_service_1.UploadService.uploadFile('videos', req.file);
-            }
+                updates.episode_number = Number(updates.episode_number);
+            if (updates.duration)
+                updates.duration = Number(updates.duration);
             const episode = await episode_service_1.EpisodeService.update(req.params.id, updates);
             res.json({ success: true, data: episode });
         }

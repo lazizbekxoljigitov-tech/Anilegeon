@@ -39,8 +39,10 @@ export const HeroBanner = ({ animeList }: HeroBannerProps) => {
             src={current.banner_url || current.thumbnail_url}
             alt={`${current.title} banner`}
             className="w-full h-full object-cover"
+            width="1920"
+            height="1080"
             loading={currentIndex === 0 ? "eager" : "lazy"}
-            fetchpriority={currentIndex === 0 ? "high" : "low"}
+            fetchPriority={currentIndex === 0 ? "high" : "low"}
             decoding="async"
           />
 

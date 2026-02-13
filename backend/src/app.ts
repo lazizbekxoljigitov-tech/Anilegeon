@@ -15,13 +15,22 @@ import categoryRoutes from './routes/category.routes';
 import uploadRoutes from './routes/upload.routes';
 import settingsRoutes from './routes/settings.routes';
 
+import compression from 'compression';
+
+// ...
+
 const app = express();
 
 // Middlewares
+app.use(compression());
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.resolve(__dirname, '../public')));
+// caching for one year
+app.use(express.static(path.resolve(__dirname, '../public'), {
+  maxAge: '1y',
+  etag: false
+}));
 
 // ...
 

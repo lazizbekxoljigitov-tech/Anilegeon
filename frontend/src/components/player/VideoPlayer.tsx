@@ -70,34 +70,69 @@ export const VideoPlayer = ({
     switch (quality) {
       case '720p': return qualities?.['720p'] || url;
       case '1080p': return qualities?.['1080p'] || url;
+      case '1440p': return qualities?.['4k'] || qualities?.['1080p'] || url; // Use best available for 1440p upscale
       case '4K (AI)': return qualities?.['4k'] || qualities?.['1080p'] || url;
       default: return url;
     }
   })();
 
-  // AI Filters for "Premium" look
-  const videoFilters = quality === '4K (AI)' 
-    ? { 
-        filter: 'url(#premium-sharpen) contrast(1.1) brightness(1.02) saturate(1.1)',
-        imageRendering: 'high-quality' as any
-      } 
-    : {
-        imageRendering: 'auto' as any
-      };
+  // Progressive Quality Filters
+  const videoFilters = (() => {
+    switch (quality) {
+      case '720p':
+        // Clean and bright base
+        return { 
+          filter: 'contrast(1.05) saturate(1.1) brightness(1.05)',
+          imageRendering: 'auto'
+        };
+      case '1080p':
+        // Vibrant HD
+        return { 
+          filter: 'contrast(1.1) saturate(1.2) brightness(1.05)',
+          imageRendering: 'auto'
+        };
+      case '1440p':
+        // Deep colors and sharpness
+        return { 
+          filter: 'contrast(1.15) saturate(1.3) brightness(1.08)',
+          imageRendering: 'high-quality' as any
+        };
+      case '4K (AI)':
+        // Ultra-Vibrant "Retail Mode" look (Max brightness/smoothness)
+        return { 
+          filter: 'contrast(1.2) saturate(1.4) brightness(1.1)', 
+          imageRendering: 'high-quality' as any
+        };
+      default:
+        return { filter: 'none' };
+    }
+  })();
 
   const handleQualityChange = (q: Quality) => {
+    if (q === quality) return;
+    
     const time = videoRef.current?.currentTime || 0;
     const wasPlaying = !videoRef.current?.paused;
     setQuality(q);
     setShowQualityMenu(false);
     
-    // Restore playback state after source switch
-    setTimeout(() => {
-      if (videoRef.current) {
-        videoRef.current.currentTime = time;
-        if (wasPlaying) videoRef.current.play();
-      }
-    }, 100);
+    // Robust switching: Wait for data to load before seeking
+    const video = videoRef.current;
+    if (video) {
+        const handleLoaded = () => {
+            video.currentTime = time;
+            if (wasPlaying) {
+                const playPromise = video.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(() => {
+                        // Auto-play was prevented, handle or ignore
+                    });
+                }
+            }
+            video.removeEventListener('loadeddata', handleLoaded);
+        };
+        video.addEventListener('loadeddata', handleLoaded);
+    }
   };
 
   const hideControls = useCallback(() => {
@@ -119,10 +154,14 @@ export const VideoPlayer = ({
 
     const updateTime = () => setCurrentTime(video.currentTime);
     const updateDuration = () => setDuration(video.duration);
+    const handleEnded = () => {
+        setIsPlaying(false);
+        if (onEnded) onEnded();
+    };
 
     video.addEventListener('timeupdate', updateTime);
     video.addEventListener('loadedmetadata', updateDuration);
-    video.addEventListener('ended', onEnded || (() => {}));
+    video.addEventListener('ended', handleEnded);
     
     // Sync Effect
     if (isSyncing && externalState && video) {
@@ -140,7 +179,7 @@ export const VideoPlayer = ({
     return () => {
       video.removeEventListener('timeupdate', updateTime);
       video.removeEventListener('loadedmetadata', updateDuration);
-      video.removeEventListener('ended', onEnded || (() => {}));
+      video.removeEventListener('ended', handleEnded);
       if (controlsTimeoutRef.current) clearTimeout(controlsTimeoutRef.current);
     };
   }, [onEnded, videoSource]); // Re-bind on source change
@@ -277,10 +316,7 @@ export const VideoPlayer = ({
         />
       )}
 
-      {/* Motion Smoothness Overlay (Simulating high FPS via temporal blending hint) */}
-      {quality === '4K (AI)' && isPlaying && (
-        <div className="absolute inset-0 pointer-events-none z-10 opacity-[0.03] animate-pulse bg-white transition-opacity duration-1000" style={{ animationDuration: '0.05s' }} />
-      )}
+
 
       {/* Premium Overlay UI - Only show for direct videos as iframes have their own controls */}
       {!embedUrl && (
@@ -428,16 +464,7 @@ export const VideoPlayer = ({
          </div>
       </div>
 
-      {/* SVG AI Sharpening Filter Definition */}
-      <svg className="hidden">
-        <filter id="premium-sharpen">
-          <feConvolveMatrix 
-            order="3" 
-            preserveAlpha="true" 
-            kernelMatrix="0 -1.2 0 -1.2 5.8 -1.2 0 -1.2 0" 
-          />
-        </filter>
-      </svg>
+
     </div>
   );
 };

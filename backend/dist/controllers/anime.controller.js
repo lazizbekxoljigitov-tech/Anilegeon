@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AnimeController = void 0;
 const anime_service_1 = require("../services/anime.service");
-const upload_service_1 = require("../services/upload.service");
 class AnimeController {
     static async getAll(req, res, next) {
         try {
@@ -34,22 +33,15 @@ class AnimeController {
     }
     static async create(req, res, next) {
         try {
-            const files = req.files;
             const animeData = { ...req.body };
-            if (animeData.category_ids && typeof animeData.category_ids === 'string') {
-                animeData.category_ids = JSON.parse(animeData.category_ids);
-            }
+            // Ensure types are correct for the service
             if (animeData.rating)
                 animeData.rating = parseFloat(animeData.rating);
-            if (animeData.is_trending)
-                animeData.is_trending = animeData.is_trending === 'true';
-            if (animeData.is_featured)
-                animeData.is_featured = animeData.is_featured === 'true';
-            if (files?.banner?.[0]) {
-                animeData.banner_url = await upload_service_1.UploadService.uploadFile('banners', files.banner[0]);
+            if (animeData.is_trending !== undefined) {
+                animeData.is_trending = animeData.is_trending === 'true' || animeData.is_trending === true;
             }
-            if (files?.thumbnail?.[0]) {
-                animeData.thumbnail_url = await upload_service_1.UploadService.uploadFile('thumbnails', files.thumbnail[0]);
+            if (animeData.is_featured !== undefined) {
+                animeData.is_featured = animeData.is_featured === 'true' || animeData.is_featured === true;
             }
             const anime = await anime_service_1.AnimeService.create(animeData);
             res.status(201).json({ success: true, data: anime });
@@ -60,22 +52,14 @@ class AnimeController {
     }
     static async update(req, res, next) {
         try {
-            const files = req.files;
             const animeData = { ...req.body };
-            if (animeData.category_ids && typeof animeData.category_ids === 'string') {
-                animeData.category_ids = JSON.parse(animeData.category_ids);
-            }
             if (animeData.rating)
                 animeData.rating = parseFloat(animeData.rating);
-            if (animeData.is_trending !== undefined)
-                animeData.is_trending = animeData.is_trending === 'true';
-            if (animeData.is_featured !== undefined)
-                animeData.is_featured = animeData.is_featured === 'true';
-            if (files?.banner?.[0]) {
-                animeData.banner_url = await upload_service_1.UploadService.uploadFile('banners', files.banner[0]);
+            if (animeData.is_trending !== undefined) {
+                animeData.is_trending = animeData.is_trending === 'true' || animeData.is_trending === true;
             }
-            if (files?.thumbnail?.[0]) {
-                animeData.thumbnail_url = await upload_service_1.UploadService.uploadFile('thumbnails', files.thumbnail[0]);
+            if (animeData.is_featured !== undefined) {
+                animeData.is_featured = animeData.is_featured === 'true' || animeData.is_featured === true;
             }
             const anime = await anime_service_1.AnimeService.update(req.params.id, animeData);
             res.json({ success: true, data: anime });

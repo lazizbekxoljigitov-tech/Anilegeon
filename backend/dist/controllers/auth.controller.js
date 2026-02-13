@@ -7,10 +7,25 @@ class AuthController {
     static async register(req, res, next) {
         try {
             const { name, email, password } = req.body;
+            console.log('Registration attempt for:', email);
             const result = await auth_service_1.AuthService.register(name, email, password);
-            res.status(201).json({ success: true, data: result });
+            console.log('Registration result:', result);
+            res.status(200).json({ success: true, ...result });
         }
         catch (error) {
+            console.error('Registration error:', error);
+            next(error);
+        }
+    }
+    static async verifyOTP(req, res, next) {
+        try {
+            const { email, otp } = req.body;
+            console.log(`[AUTH] Verifying OTP for: ${email}, code: ${otp}`);
+            const result = await auth_service_1.AuthService.verifyOTP(email, otp);
+            res.json({ success: true, data: result });
+        }
+        catch (error) {
+            console.error('[AUTH] OTP Verify Error:', error.message);
             next(error);
         }
     }
@@ -21,6 +36,28 @@ class AuthController {
             res.json({ success: true, data: result });
         }
         catch (error) {
+            next(error);
+        }
+    }
+    static async requestPasswordReset(req, res, next) {
+        try {
+            const { email } = req.body;
+            const result = await auth_service_1.AuthService.requestPasswordReset(email);
+            res.json({ success: true, ...result });
+        }
+        catch (error) {
+            next(error);
+        }
+    }
+    static async resetPassword(req, res, next) {
+        try {
+            const { email, otp, newPassword } = req.body;
+            console.log(`[AUTH] Password reset attempt for: ${email}, code: ${otp}`);
+            const result = await auth_service_1.AuthService.resetPassword(email, otp, newPassword);
+            res.json(result);
+        }
+        catch (error) {
+            console.error('[AUTH] Password Reset Error:', error.message);
             next(error);
         }
     }

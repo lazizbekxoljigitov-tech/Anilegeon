@@ -5,7 +5,35 @@ export interface User {
     password: string;
     role: 'user' | 'admin';
     avatar_url?: string;
+    bio?: string;
+    gender?: string;
+    country?: string;
+    dob?: string;
+    is_deleted?: boolean;
+    deleted_at?: string;
     created_at: string;
+}
+export interface UserPreferences {
+    user_id: string;
+    genres: string[];
+    language: string;
+    autoplay: boolean;
+    quality: string;
+    mature_content: boolean;
+}
+export interface UserPrivacy {
+    user_id: string;
+    visibility: 'public' | 'friends' | 'private';
+    show_status: boolean;
+    allow_requests: boolean;
+}
+export interface UserNotifications {
+    user_id: string;
+    email_notifications: boolean;
+    push_notifications: boolean;
+    episode_alerts: boolean;
+    comment_replies: boolean;
+    friend_requests: boolean;
 }
 export interface Anime {
     id: string;
