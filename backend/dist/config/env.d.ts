@@ -7,5 +7,7 @@ export declare const env: {
     SUPABASE_SERVICE_ROLE_KEY: string;
     JWT_SECRET: string;
     JWT_EXPIRES_IN: string;
+    EMAIL_USER: string;
+    EMAIL_PASS: string;
 };
 //# sourceMappingURL=env.d.ts.map

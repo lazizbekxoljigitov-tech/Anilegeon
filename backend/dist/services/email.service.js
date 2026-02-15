@@ -14,12 +14,11 @@ class EmailService {
                 pass: env_1.env.EMAIL_PASS,
             },
         });
-        console.log(`[SYNC_VER_1.3] EmailService initialized with user: ${env_1.env.EMAIL_USER}`);
+        console.log(`EmailService initialized with user: ${env_1.env.EMAIL_USER}`);
     }
     async sendOTP(to, otp) {
-        console.log(`[SYNC_VER_1.3] Attempting to send OTP to: ${to} (Code: ${otp})`);
+        console.log(`Attempting to send OTP to: ${to} (Code: ${otp})`);
         const mailOptions = {
-            // ... existing options ...
             from: `"ANILEGEON" <${env_1.env.EMAIL_USER}>`,
             to,
             subject: 'Verification Code - ANILEGEON',

@@ -20,12 +20,10 @@ class AuthController {
     static async verifyOTP(req, res, next) {
         try {
             const { email, otp } = req.body;
-            console.log(`[AUTH] Verifying OTP for: ${email}, code: ${otp}`);
             const result = await auth_service_1.AuthService.verifyOTP(email, otp);
             res.json({ success: true, data: result });
         }
         catch (error) {
-            console.error('[AUTH] OTP Verify Error:', error.message);
             next(error);
         }
     }
@@ -52,12 +50,10 @@ class AuthController {
     static async resetPassword(req, res, next) {
         try {
             const { email, otp, newPassword } = req.body;
-            console.log(`[AUTH] Password reset attempt for: ${email}, code: ${otp}`);
             const result = await auth_service_1.AuthService.resetPassword(email, otp, newPassword);
             res.json(result);
         }
         catch (error) {
-            console.error('[AUTH] Password Reset Error:', error.message);
             next(error);
         }
     }
