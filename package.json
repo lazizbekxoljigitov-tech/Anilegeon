@@ -11,10 +11,15 @@
     "copy-build": "node build-script.js",
     "dev": "concurrently \"npm run backend\" \"npm run frontend:dev\""
   },
-  "keywords": ["anime", "streaming", "entertainment"],
+  "keywords": [
+    "anime",
+    "streaming",
+    "entertainment"
+  ],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "typescript": "^5.9.3"
   }
 }
