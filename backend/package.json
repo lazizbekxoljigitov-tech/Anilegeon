@@ -1,48 +1,37 @@
 {
-  "name": "anilegeon",
+  "name": "anilegeon-backend",
   "version": "1.0.0",
-  "description": "Anilegeon - Premium Anime Streaming Platform",
+  "description": "ANILEGEON Backend API Server",
+  "main": "dist/server.js",
   "scripts": {
-    "start": "node backend/dist/server.js",
-    "backend:dev": "cd backend && tsx watch src/server.ts",
-    "backend:build": "cd backend && tsc",
-    "frontend:dev": "cd frontend && npm run dev",
-    "frontend:build": "cd frontend && npm install && npm run build",
-    "build": "npm run frontend:build && npm run backend:build",
-    "dev": "concurrently \"npm run backend:dev\" \"npm run frontend:dev\""
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js"
   },
-  "keywords": [
-    "anime",
-    "streaming",
-    "entertainment"
-  ],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "@supabase/supabase-js": "^2.39.0",
     "bcryptjs": "^2.4.3",
     "compression": "^1.8.1",
-    "cors": "^2.8.5",
+    "cors": "^2.8.6",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^8.0.1",
     "socket.io": "^4.8.3",
-    "uuid": "^9.0.0",
-    "typescript": "^5.9.3",
-    "concurrently": "^8.2.2",
-    "tsx": "^4.6.2"
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
     "@types/compression": "^1.8.1",
-    "@types/cors": "^2.8.17",
+    "@types/cors": "^2.8.19",
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.5",
     "@types/multer": "^1.4.11",
     "@types/node": "^20.10.0",
     "@types/nodemailer": "^7.0.9",
-    "@types/uuid": "^9.0.7"
+    "@types/uuid": "^9.0.7",
+    "tsx": "^4.6.2",
+    "typescript": "^5.3.2"
   }
 }
