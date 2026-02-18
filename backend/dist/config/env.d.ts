@@ -9,5 +9,6 @@ export declare const env: {
     JWT_EXPIRES_IN: string;
     EMAIL_USER: string;
     EMAIL_PASS: string;
+    FRONTEND_URL: string | undefined;
 };
 //# sourceMappingURL=env.d.ts.map

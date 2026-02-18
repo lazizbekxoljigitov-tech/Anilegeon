@@ -9,6 +9,7 @@
     "frontend:dev": "cd frontend && npm run dev",
     "frontend:build": "cd frontend && npm run build",
     "frontend:preview": "cd frontend && npm run preview",
+    "build": "concurrently --names \"B_BUILD,F_BUILD\" --prefix-colors \"yellow,blue\" \"npm run backend:build\" \"npm run frontend:build\"",
     "dev": "concurrently --names \"BACKEND,FRONTEND\" --prefix-colors \"cyan,magenta\" \"npm run backend:dev\" \"npm run frontend:dev\""
   },
   "keywords": ["anime", "streaming", "entertainment"],
