@@ -9,8 +9,8 @@ const startServer = async () => {
 
     const PORT = env.PORT || 5000;
 
-    app.listen(PORT, () => {
-      logger.success(`🚀 ANILEGEON Backend running at http://localhost:${PORT}`);
+    app.listen(PORT, '0.0.0.0', () => {
+      logger.success(`🚀 ANILEGEON Backend running and listening on 0.0.0.0:${PORT}`);
       logger.info(`Environment: ${env.NODE_ENV}`);
     });
   } catch (error) {
