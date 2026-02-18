@@ -4,28 +4,37 @@ dotenv.config();
 const required = ['SUPABASE_URL', 'SUPABASE_ANON_KEY', 'SUPABASE_SERVICE_ROLE_KEY', 'JWT_SECRET', 'EMAIL_USER', 'EMAIL_PASS'];
 
 export function validateEnv(): void {
-  const missing = required.filter((key) => !process.env[key] || process.env[key]?.includes('your_'));
+  const missing = required.filter((key) => {
+    const val = (env as any)[key];
+    return !val || val === '' || val.includes('your_');
+  });
   
   if (missing.length > 0) {
-    throw new Error(
-      `❌ Missing or invalid environment variables: ${missing.join(', ')}\n` +
-      `Please update your backend/.env file with real values.`
-    );
+    const errorMsg = `❌ Missing or invalid environment variables: ${missing.join(', ')}`;
+    logger.error(errorMsg);
+    throw new Error(errorMsg);
   }
 }
 
 // Perform validation immediately on load
 validateEnv();
 
+const cleanEnv = (key: string, defaultValue?: string): string => {
+  const value = process.env[key] || defaultValue;
+  if (!value) return '';
+  // Remove surrounding quotes if they exist
+  return value.replace(/^["'](.+)["']$/, '$1');
+};
+
 export const env = {
-  PORT: parseInt(process.env.PORT || '5000', 10),
-  NODE_ENV: process.env.NODE_ENV || 'development',
-  SUPABASE_URL: process.env.SUPABASE_URL!,
-  SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY!,
-  SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY!,
-  JWT_SECRET: process.env.JWT_SECRET!,
-  JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || '7d',
-  EMAIL_USER: process.env.EMAIL_USER!,
-  EMAIL_PASS: process.env.EMAIL_PASS!,
-  FRONTEND_URL: process.env.FRONTEND_URL,
+  PORT: parseInt(cleanEnv('PORT', '5000'), 10),
+  NODE_ENV: cleanEnv('NODE_ENV', 'development'),
+  SUPABASE_URL: cleanEnv('SUPABASE_URL'),
+  SUPABASE_ANON_KEY: cleanEnv('SUPABASE_ANON_KEY'),
+  SUPABASE_SERVICE_ROLE_KEY: cleanEnv('SUPABASE_SERVICE_ROLE_KEY'),
+  JWT_SECRET: cleanEnv('JWT_SECRET'),
+  JWT_EXPIRES_IN: cleanEnv('JWT_EXPIRES_IN', '7d'),
+  EMAIL_USER: cleanEnv('EMAIL_USER'),
+  EMAIL_PASS: cleanEnv('EMAIL_PASS'),
+  FRONTEND_URL: cleanEnv('FRONTEND_URL'),
 };
