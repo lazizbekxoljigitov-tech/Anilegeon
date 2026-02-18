@@ -5,6 +5,7 @@ import './styles/globals.css';
 import './i18n/config';
 
 // Service Worker Registration for PWA
+/*
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker
@@ -17,6 +18,7 @@ if ('serviceWorker' in navigator) {
       });
   });
 }
+*/
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

@@ -5,23 +5,30 @@ import { useAuthStore } from './features/auth/store/authStore';
 import { LoadingScreen } from './components/ui/LoadingScreen';
 import { SecretAdminModal } from './components/ui/SecretAdminModal';
 import { AnimatePresence } from 'framer-motion';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   const { checkAuth } = useAuthStore();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isInitializing, setIsInitializing] = useState(true);
 
   useEffect(() => {
-    checkAuth();
-    setIsLoading(false);
+    // Wait for auth check to complete before rendering routes
+    checkAuth().finally(() => {
+      setIsInitializing(false);
+    });
   }, []);
+
+  if (isInitializing) {
+    return <LoadingScreen />;
+  }
 
   return (
     <BrowserRouter>
-      <AnimatePresence mode="wait">
-        {isLoading && <LoadingScreen key="loader" />}
-      </AnimatePresence>
+      <Toaster position="top-right" />
       <SecretAdminModal />
-      <AppRoutes />
+      <AnimatePresence mode="wait">
+        <AppRoutes />
+      </AnimatePresence>
     </BrowserRouter>
   );
 }

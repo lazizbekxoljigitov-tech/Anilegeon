@@ -1,10 +1,10 @@
 @echo off
 echo ========================================
-echo   ANILEGEON - BACKEND (Port 5000)
+echo   ANILEGEON - FRONTEND (Port 4000)
 echo ========================================
 echo.
-echo Backend ishga tushirilmoqda...
-echo API: http://localhost:5000/api
+echo Frontend ishga tushirilmoqda...
+echo URL: http://localhost:4000
 echo.
-cd backend
+cd frontend
 call npm run dev

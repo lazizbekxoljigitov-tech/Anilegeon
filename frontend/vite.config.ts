@@ -15,7 +15,8 @@ export default defineConfig({
     }),
   ],
   build: {
-    outDir: '../backend/public',
+    // Frontend builds to its own dist folder — independent of backend
+    outDir: 'dist',
     emptyOutDir: true,
     minify: 'esbuild',
     rollupOptions: {
@@ -33,7 +34,8 @@ export default defineConfig({
     sourcemap: false,
   },
   server: {
-    port: 3000,
+    port: 4000,
+    // In dev mode, proxy /api calls to the backend running on port 5000
     proxy: {
       '/api': {
         target: 'http://localhost:5000',
